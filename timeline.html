@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Летопись компании QazaqGaz Aimaq</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #050b15;
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    /* Шапка */
+    header {
+      padding: 8px 16px;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: radial-gradient(circle at top left, #1e88ff 0, #050b15 55%);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .brand-logo {
+      height: 40px;
+      width: auto;
+      filter: drop-shadow(0 0 6px rgba(0, 180, 255, 0.7));
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .brand-name {
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .brand-subtitle {
+      font-size: 11px;
+      text-transform: none;
+      opacity: 0.8;
+      white-space: nowrap;
+    }
+
+    /* Переключатель языка */
+    .lang-switch {
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      overflow: hidden;
+      background: rgba(1,10,25,0.6);
+    }
+    .lang-btn {
+      padding: 4px 10px;
+      font-size: 11px;
+      border: none;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .lang-btn.active {
+      background: rgba(37,196,255,0.2);
+    }
+
+    /* Подсказка */
+    .hint {
+      position: absolute;
+      left: 16px;
+      bottom: 32px;
+      font-size: 11px;
+      opacity: 0.65;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Футер */
+    footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 4px 16px 6px;
+      font-size: 11px;
+      opacity: 0.7;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Область таймлайна */
+    #timeline-wrapper {
+      position: fixed;
+      top: 56px;      /* высота шапки */
+      left: 0;
+      right: 0;
+      bottom: 22px;   /* высота футера */
+      z-index: 1;
+    }
+    #timeline {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Заставка */
+    #screensaver {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(37,196,255,0.35), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(0,191,165,0.35), transparent 55%),
+        #020712;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 5;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    #screensaver.visible {
+      display: flex;
+      animation: ss-fade-in 0.6s ease-out;
+    }
+
+    /* Анимация логотипа */
+    #screensaver-logo {
+      height: 80px;
+      width: auto;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 12px rgba(0, 200, 255, 0.9));
+      animation: logo-pulse 3s ease-in-out infinite;
+      transform-origin: center center;
+    }
+
+    /* Текст заставки */
+    #screensaver-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-align: center;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    #screensaver-tagline {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-bottom: 20px;
+      text-align: center;
+      max-width: 260px;
+      animation: tagline-pulse 4s ease-in-out infinite;
+    }
+    #screensaver-hint {
+      font-size: 11px;
+      opacity: 0.6;
+      animation: hint-blink 2.4s ease-in-out infinite;
+    }
+
+    /* Цифровые точки на заставке */
+    .screensaver-dots {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .screensaver-dots span {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(180, 230, 255, 0.8);
+      box-shadow: 0 0 6px rgba(120, 220, 255, 0.9);
+      opacity: 0;
+      animation: dot-float 9s linear infinite;
+    }
+    .screensaver-dots span:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .screensaver-dots span:nth-child(2) { left: 25%; top: 70%; animation-delay: 1.2s; }
+    .screensaver-dots span:nth-child(3) { left: 45%; top: 15%; animation-delay: 2.4s; }
+    .screensaver-dots span:nth-child(4) { left: 65%; top: 65%; animation-delay: 3.6s; }
+    .screensaver-dots span:nth-child(5) { left: 82%; top: 30%; animation-delay: 4.8s; }
+    .screensaver-dots span:nth-child(6) { left: 30%; top: 45%; animation-delay: 6s; }
+    .screensaver-dots span:nth-child(7) { left: 55%; top: 80%; animation-delay: 7.2s; }
+    .screensaver-dots span:nth-child(8) { left: 78%; top: 50%; animation-delay: 8.4s; }
+
+    @keyframes logo-pulse {
+      0%   { transform: scale(1); }
+      25%  { transform: scale(1.06); }
+      50%  { transform: scale(1.03); }
+      75%  { transform: scale(1.07); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes tagline-pulse {
+      0%   { opacity: 0.7; transform: translateY(0); }
+      50%  { opacity: 1;   transform: translateY(-2px); }
+      100% { opacity: 0.7; transform: translateY(0); }
+    }
+
+    @keyframes hint-blink {
+      0%   { opacity: 0.25; }
+      50%  { opacity: 0.8; }
+      100% { opacity: 0.25; }
+    }
+
+    @keyframes ss-fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes dot-float {
+      0% {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-40px);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: row;
+        align-items: center;
+      }
+      .brand-name {
+        font-size: 13px;
+      }
+      .brand-subtitle {
+        font-size: 10px;
+      }
+      .lang-btn {
+        font-size: 10px;
+        padding: 3px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Заставка (появляется при простое) -->
+  <div id="screensaver">
+    <!-- цифровые точки -->
+    <div class="screensaver-dots">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <img id="screensaver-logo" src="https://raw.githubusercontent.com/azyussupov/aimaq-assets/main/logo.png" alt="QazaqGaz Aimaq logo">
+    <div id="screensaver-title">Летопись</div>
+    <div id="screensaver-tagline">История развития газификации региона</div>
+    <div id="screensaver-hint">Коснитесь экрана, чтобы продолжить</div>
+  </div>
+
+  <!-- Шапка -->
+  <header>
+    <div class="brand">
+      <img src="https://raw.githubusercontent.com/azyussupov/aimaq-assets/main/logo.png" alt="QazaqGaz Aimaq logo" class="brand-logo">
+      <div class="brand-text">
+        <div class="brand-name">Компания шежіресі/Летопись компании</div>
+      </div>
+    </div>
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="kk">Қазақша</button>
+      <button class="lang-btn active" data-lang="ru">Русский</button>
+    </div>
+  </header>
+
+  <!-- Таймлайн -->
+  <div id="timeline-wrapper">
+    <iframe
+      id="timeline"
+      src=""
+      webkitallowfullscreen
+      mozallowfullscreen
+      allowfullscreen
+      frameborder="0">
+    </iframe>
+  </div>
+
+  <!-- Подсказка -->
+  <div class="hint">
+    Проведите по экрану, чтобы листать историю компании
+  </div>
+
+  <!-- Футер -->
+  <footer>
+    Версия 1.0 · Год обновления летописи 2025
+  </footer>
+
+  <script>
+    // ВСТАВЬ сюда реальные ссылки от TimelineJS
+    const TIMELINE_RU_URL =
+      "https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=v2%3A2PACX-1vQIpFlEGdwBOqMuqhMQvIphWeTvniDpPoy_5YPBrJyNELe1Z91wqOXY8wfqnQvnjG6RA1E30jzQBx2Q&font=Default&lang=ru&timenav_position=top&debug=true&hash_bookmark=true&initial_zoom=2&width=100%25&height=650/pubhtml?widget=true&amp;headers=false#event--";
+
+    // Пока казахская версия не готова — можно временно использовать тот же таймлайн
+    const TIMELINE_KK_URL =	
+	"https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=v2%3A2PACX-1vRIHeBzAeOpQkOKxIYpNPQ15GZK4v8_Tm79Sg6p51BCq1-p6VJO_Q5SE4uydzujdFtW6xLw-wwzkXOn&font=Default&lang=ru&start_at_end=true&timenav_position=top&hash_bookmark=true&initial_zoom=2&width=100%25&height=650#event--";
+
+    const iframe = document.getElementById("timeline");
+    const langButtons = document.querySelectorAll(".lang-btn");
+
+    function setLang(lang) {
+      if (lang === "kk") {
+        iframe.src = TIMELINE_KK_URL;
+      } else {
+        iframe.src = TIMELINE_RU_URL;
+      }
+    }
+
+    langButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        langButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        setLang(btn.dataset.lang);
+      });
+    });
+
+    // язык по умолчанию — Қазақша
+    setLang("kz");
+
+    // ЗАСТАВКА ПОСЛЕ ПРОСТОЯ
+    const IDLE_DELAY = 2 * 60 * 1000; // 2 минуты
+    const screensaver = document.getElementById("screensaver");
+    let idleTimeout = null;
+
+    function showScreensaver() {
+      screensaver.classList.add("visible");
+    }
+
+    function hideScreensaver() {
+      screensaver.classList.remove("visible");
+    }
+
+    function resetIdleTimer() {
+      clearTimeout(idleTimeout);
+      hideScreensaver();
+      idleTimeout = setTimeout(showScreensaver, IDLE_DELAY);
+    }
+
+    // События активности
+    ["click", "mousemove", "touchstart", "keydown"].forEach(eventName => {
+      document.addEventListener(eventName, resetIdleTimer, { passive: true });
+    });
+
+    // Выход из заставки по тапу
+    screensaver.addEventListener("click", resetIdleTimer);
+
+    // Старт таймера при загрузке
+    resetIdleTimer();
+  </script>
+</body>
+</html>
