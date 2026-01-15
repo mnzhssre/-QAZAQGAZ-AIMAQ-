@@ -782,7 +782,7 @@ table tbody tr:nth-child(even) {
   display: block;
   width: 100%;
   height: 220px;           /* можно 200-260 */
-  object-fit: contain;       /* красиво обрезает под карточку */
+  object-fit: cover;       /* красиво обрезает под карточку */
   background: #000;
 }
 
@@ -898,10 +898,9 @@ table tbody tr:nth-child(even) {
           <div class="text-block">
             Конкурс рисунков среди детей сотрудников показывает, как дети видят газификацию, безопасность и заботу о городе.
             <br /><br />
-            <a href="https://www.instagram.com/reel/C73Nwb0C0ty/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-               target="_blank" rel="noopener noreferrer" style="color:#fed7aa; text-decoration: underline;">
-              Смотреть ролик в Instagram
-            </a>
+             <div class="card-media">
+  <video class="inline-video" controls playsinline preload="metadata">
+    <source src="media/videos/deti_sotrudnikov.mp4" type="video/mp4">
           </div>
         </article>
 
