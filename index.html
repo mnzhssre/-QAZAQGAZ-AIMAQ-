@@ -770,6 +770,21 @@ table tbody tr:nth-child(even) {
         flex-basis: 100%;
       }
     }
+		.card-media{
+  margin-top: 12px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(148,163,184,0.35);
+  background: rgba(255,255,255,0.65);
+}
+
+.inline-video{
+  display: block;
+  width: 100%;
+  height: 220px;           /* можно 200-260 */
+  object-fit: contain;       /* красиво обрезает под карточку */
+  background: #000;
+}
 
   </style>
 </head>
@@ -781,7 +796,7 @@ table tbody tr:nth-child(even) {
     <img src="media/logo-astpf.png" alt="Логотип АстПФ" />
   </div>
   <div>
-    <div class="brand-text-main">Производственный технический филиал АО "QAZAQGAZ AIMAQ"</div>
+    <div class="brand-text-main">Астанинский производственный филиал АО "QAZAQGAZ AIMAQ"</div>
     <div class="brand-text-sub">Газификация, люди и истории компании</div>
   </div>
 </div>
@@ -862,10 +877,13 @@ table tbody tr:nth-child(even) {
           <div class="text-block">
             Конкурс «Үздік маман – 2025» показывает, что основа нашей миссии — сильные специалисты, которые знают своё дело и развивают отрасль.
             <br /><br />
-            <a href="https://www.instagram.com/reel/DMPI5OQolGm/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-               target="_blank" rel="noopener noreferrer" style="color:#fed7aa; text-decoration: underline;">
-              Смотреть ролик в Instagram
-            </a>
+            <div class="card-media">
+  <video class="inline-video" controls playsinline preload="metadata">
+    <source src="media/videos/uzdik_maman_2025.mp4" type="video/mp4">
+    
+  </video>
+</div>
+
           </div>
         </article>
 
