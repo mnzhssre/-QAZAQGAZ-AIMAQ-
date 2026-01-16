@@ -377,7 +377,7 @@ body{
 
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
       gap: 12px;
     }
 
@@ -864,28 +864,34 @@ table tbody tr:nth-child(even) {
         <br /><br />
         Мы верим, что газификация — это не только трубы и оборудование, но и доверие людей, которым мы служим, и уважение к их труду и семье.
       </div>
+	
+	<div class="cards-grid">
+      <article class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">«Үздік маман – 2025»</div>
+          <div class="card-meta">Конкурс профессионального мастерства</div>
+        </div>
+        <span class="tag">Профессионализм</span>
+      </div>
 
-      <div class="cards-grid">
-        <article class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">«Үздік маман – 2025»</div>
-              <div class="card-meta">Конкурс профессионального мастерства</div>
-            </div>
-            <span class="tag">Профессионализм</span>
-          </div>
-          <div class="text-block">
-            Конкурс «Үздік маман – 2025» показывает, что основа нашей миссии — сильные специалисты, которые знают своё дело и развивают отрасль.
-            <br /><br />
-            <div class="card-media">
-  <video class="inline-video" controls playsinline preload="metadata">
-    <source src="media/videos/uzdik_maman_2025.mp4" type="video/mp4">
-    
-  </video>
-</div>
+      <div class="text-block">
+        Конкурс «Үздік маман – 2025» показывает, что основа нашей миссии — сильные специалисты,
+        которые знают своё дело и развивают отрасль.
+        <br><br>
 
-          </div>
-        </article>
+        <div class="card-media">
+          <!-- Instagram Embed: Uźdik maman – 2025 -->
+<blockquote class="instagram-media"
+  data-instgrm-permalink="https://www.instagram.com/reel/DPTy08CDMcL/"
+  data-instgrm-version="14"
+  style="max-width: "180px; width: 100%; margin: 12px auto;">
+</blockquote>
+
+          </video>
+        </div>
+      </div>
+    </article>
 
         <article class="card">
           <div class="card-header">
@@ -2189,6 +2195,27 @@ table tbody tr:nth-child(even) {
   })();
 
 </script>
+<script async src="https://www.instagram.com/embed.js">
+</script>
+<script>
+  function refreshInstagramEmbeds(){
+    if (window.instgrm && window.instgrm.Embeds) {
+      window.instgrm.Embeds.process();
+    }
+  }
+
+  // На всякий случай обработаем при загрузке
+  window.addEventListener("load", () => {
+    setTimeout(refreshInstagramEmbeds, 600);
+  });
+
+  // Если у тебя есть табы/кнопки навигации — вызови refresh после клика
+  document.addEventListener("click", (e) => {
+    const isNav = e.target.closest("[data-target], .nav-item, .menu-item, a[href^='#section']");
+    if (isNav) setTimeout(refreshInstagramEmbeds, 300);
+  });
+</script>
+
 
 </body>
 </html>
