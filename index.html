@@ -1207,9 +1207,9 @@ table tbody tr:nth-child(even) {
         </tr>
       </thead>
       <tbody>
-        <!-- г. АСТАНА И ПРИГОРОД -->
+        <!-- г. АСТАНА -->
         <tr class="table-section-row">
-          <td colspan="5">г. Астана и пригород</td>
+          <td colspan="5">г. Астана</td>
         </tr>
 
         <tr>
@@ -1341,7 +1341,11 @@ table tbody tr:nth-child(even) {
           <td class="link-cell">—</td>
         </tr>
 
-        <tr>
+        <tr class="table-section-row">
+          <td colspan="5">г. Қосшы</td>
+        </tr>
+
+	<tr>
           <td>Қосшы (Косшы қаласы)</td>
           <td>г. Косшы</td>
           <td>16.09.2025</td>
@@ -2172,6 +2176,85 @@ table tbody tr:nth-child(even) {
   })();
 
 </script>
+<script>
+(function () {
+  const monthMap = {
+    "январь": 0, "февраль": 1, "март": 2, "апрель": 3,
+    "май": 4, "июнь": 5, "июль": 6, "август": 7,
+    "сентябрь": 8, "октябрь": 9, "ноябрь": 10, "декабрь": 11
+  };
+
+  function parseDate(text) {
+    if (!text) return null;
+    const t = text.toLowerCase().trim();
+
+    // планы всегда наверху
+    if (t.includes("план")) {
+      return new Date(2100, 0, 1);
+    }
+
+    // дд.мм.гггг
+    let m = t.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+    if (m) {
+      return new Date(+m[3], +m[2] - 1, +m[1]);
+    }
+
+    // месяц год
+    m = t.match(/([а-яё]+)\s+(\d{4})/);
+    if (m && monthMap[m[1]] !== undefined) {
+      return new Date(+m[2], monthMap[m[1]], 1);
+    }
+
+    // год
+    m = t.match(/(\d{4})/);
+    if (m) {
+      return new Date(+m[1], 0, 1);
+    }
+
+    return null;
+  }
+
+  const tbody = document.querySelector("table tbody");
+  if (!tbody) return;
+
+  const rows = Array.from(tbody.children);
+
+  let groups = [];
+  let currentGroup = null;
+
+  rows.forEach(row => {
+    if (row.classList.contains("table-section-row")) {
+      currentGroup = {
+        header: row,
+        items: []
+      };
+      groups.push(currentGroup);
+    } else if (currentGroup) {
+      currentGroup.items.push(row);
+    }
+  });
+
+  groups.forEach(group => {
+    group.items.sort((a, b) => {
+      const da = parseDate(a.children[2]?.innerText);
+      const db = parseDate(b.children[2]?.innerText);
+
+      if (da && db) return db - da;
+      if (da) return -1;
+      if (db) return 1;
+      return 0;
+    });
+  });
+
+  // пересобираем tbody
+  tbody.innerHTML = "";
+  groups.forEach(group => {
+    tbody.appendChild(group.header);
+    group.items.forEach(row => tbody.appendChild(row));
+  });
+})();
+</script>
+
 
 </body>
 </html>
